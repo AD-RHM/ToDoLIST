@@ -22,8 +22,8 @@ public class TaskImpl implements TaskInterface {
              PreparedStatement ps = connectionDB.prepareStatement(query)) {
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setString(3, task.getPriority().name());
-            ps.setString(4, task.getStatus().name());
+            ps.setString(3, String.valueOf(task.getPriority()));
+            ps.setString(4, String.valueOf(task.getStatus()));
             ps.setDate(5, Date.valueOf(task.getCreatedAt()));
             ps.setDate(6, Date.valueOf(task.getUpdatedAt()));
             return ps.executeUpdate() > 0;
@@ -51,8 +51,8 @@ public class TaskImpl implements TaskInterface {
              PreparedStatement ps = connectionDB.prepareStatement(query)) {
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setString(3, task.getPriority().name());
-            ps.setString(4, task.getStatus().name());
+            ps.setString(3, String.valueOf(task.getPriority()));
+            ps.setString(4, String.valueOf(task.getStatus()));
             ps.setDate(5, Date.valueOf(LocalDate.now()));
             ps.setLong(6, task.getId());
             return ps.executeUpdate() > 0;
@@ -78,12 +78,12 @@ public class TaskImpl implements TaskInterface {
     }
 
     @Override
-    public List<Task> getTasksByName(String name) {
+    public List<Task> getTasksByStatus(Status status) {
         List<Task> tasks = new ArrayList<>();
-        String query = "select * from tasks where name = ?";
+        String query = "select * from tasks where status = ?";
         try (var connectionDB = ConnectionDB.getConnection();
              var ps = connectionDB.prepareStatement(query)) {
-            ps.setString(1, name);
+            ps.setString(1, String.valueOf(status));
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     tasks.add(mapRowToTask(rs));

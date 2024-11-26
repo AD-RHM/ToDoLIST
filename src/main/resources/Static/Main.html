@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .task-item {
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .task-date {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .btn-action {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .filter-btn.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title mb-4">Task Manager</h1>
+
+                    <!-- Task Input Form -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-8">
+                            <input type="text" class="form-control" placeholder="Add a new task...">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button class="btn btn-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Task
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-primary active">All</button>
+                        <button class="btn btn-outline-primary">Pending</button>
+                        <button class="btn btn-outline-primary">InProgress</button>
+                        <button class="btn btn-outline-primary">Completed</button>
+                        <button class="btn btn-outline-primary">Cancelled</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tasks Container -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Task Item -->
+                    <div class="task-item p-3 border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5 class="mb-1">Complete the project presentation</h5>
+                                <div class="task-date">Due: Tomorrow, 5:00 PM</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group">
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-edit text-primary"></i>
+                                    </button>
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Completed Task Item -->
+                    <div class="task-item p-3 border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" checked>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5 class="mb-1 completed">Review team meeting notes</h5>
+                                <div class="task-date">Completed: Today, 2:30 PM</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group">
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-edit text-primary"></i>
+                                    </button>
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task Item -->
+                    <div class="task-item p-3">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5 class="mb-1">Send weekly report to manager</h5>
+                                <div class="task-date">Due: Friday, 12:00 PM</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group">
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-edit text-primary"></i>
+                                    </button>
+                                    <button class="btn btn-light btn-action">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
