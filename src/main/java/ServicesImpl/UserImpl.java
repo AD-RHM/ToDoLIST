@@ -1,9 +1,9 @@
-package Impl;
+package ServicesImpl;
 
 
 import DB_Connection.ConnectionDB;
-import Interfaces.UserInterface;
 import DTO.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,37 +21,37 @@ public class UserImpl implements UserInterface {
             ps.setString(1, user.getFirstName());
             ps.setString(2,user.getLastName());
             ps.setString(3,user.getEmail());
-            ps.setString(4,user.getPassword());
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            ps.setString(4,hashPassword(user.getPassword()));
+            return ps.executeUpdate() > 0;
         }
     }
 
 
     @Override
     public User login(String username, String password) throws SQLException, ClassNotFoundException {
-
-        String query = "select * from users where email = ? and password = ?";
-        try(var connectionDB = ConnectionDB.getConnection();
-        var ps = connectionDB.prepareStatement(query)) {
-            ps.setString(1,username);
-            ps.setString(2,password);
-            try(ResultSet rs = ps.executeQuery(query)) {
-                while(rs.next()) {
-                    user.setId(rs.getLong("id"));
-                    user.setFirstName(rs.getString("firstname"));
-                    user.setLastName(rs.getString("lastname"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
+        String query = "select * from users where email = ?";
+        try (var connectionDB = ConnectionDB.getConnection();
+             var ps = connectionDB.prepareStatement(query)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String hashedPassword = rs.getString("password");
+                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                    if (encoder.matches(password, hashedPassword)) {
+                        // Populate the user object with data from the result set
+                        user.setId(rs.getLong("id"));
+                        user.setFirstName(rs.getString("firstname"));
+                        user.setLastName(rs.getString("lastname"));
+                        user.setEmail(rs.getString("email"));
+                        user.setPassword(hashedPassword); // Optional, avoid storing passwords in memory
+                        return user;
+                    }
                 }
             }
         }
-        return user;
+        return null; // Return null if login fails
     }
+
 
     @Override
     public boolean edit(User user) throws SQLException, ClassNotFoundException {
@@ -61,7 +61,7 @@ public class UserImpl implements UserInterface {
             ps.setString(1,user.getFirstName());
             ps.setString(2,user.getLastName());
             ps.setString(3,user.getEmail());
-            ps.setString(4,user.getPassword());
+            ps.setString(4,hashPassword(user.getPassword()));
             ps.setLong(5,user.getId());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -71,4 +71,9 @@ public class UserImpl implements UserInterface {
             }
         }
     }
+    private String hashPassword(String plainPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(plainPassword);
+    }
 }
+
