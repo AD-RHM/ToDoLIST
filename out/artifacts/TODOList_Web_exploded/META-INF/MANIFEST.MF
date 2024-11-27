@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: a.rahmane
+Build-Jdk: Oracle OpenJDK 21.0.4
+Implementation-Title: TODOList
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: webapp
+Main-Class: ${start-class}
+
