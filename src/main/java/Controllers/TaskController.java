@@ -9,26 +9,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class TaskController {
 
-    private TaskService taskService;
+    private final TaskService taskService = new TaskService();
 
-    @Autowired
-    public TaskController() {
-        this.taskService = new TaskService();
-    }
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String showTasks(@RequestParam(value = "status",required = false) Status status, Model model) {
         if (status != null) {
             model.addAttribute("tasks", taskService.getTasksByStatus(status));
         }else {
-            model.addAttribute("tasks", taskService.getAllTasks());
+
         }
         model.addAttribute("statusList", Status.values());
-        return "TaskManager";
+        return "index";
     }
 
     @PostMapping("/addTask")
@@ -37,13 +34,13 @@ public class TaskController {
         task.setName(name);
         task.setStatus(status);
         taskService.addTask(task);
-        return "redirect:/";
+        return "redirect:/index";
     }
 
     @PostMapping("/deleteTask")
     public String deleteTask(@RequestParam int id) {
         taskService.deleteTask(id);
-        return "redirect:/";
+        return "redirect:/index";
     }
 
 }
