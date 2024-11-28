@@ -61,7 +61,7 @@
                     <small class="text-muted">(${task.status})</small>
                 </div>
                 <form method="post" action="/deleteTask">
-                    <input type="hidden" name="taskId" value="${task.id}">
+                    <input type="hidden" name="id" value="${task.id}">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </div>

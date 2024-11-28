@@ -14,16 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class TaskController {
 
-    private final TaskService taskService = new TaskService();
+    private final TaskService taskService;
+    {
+        taskService = new TaskService();
+    }
 
 
     @GetMapping("/index")
     public String showTasks(@RequestParam(value = "status",required = false) Status status, Model model) {
-        if (status != null) {
+        /*if (status != null) {
             model.addAttribute("tasks", taskService.getTasksByStatus(status));
-        }else {
-
-        }
+        } else {
+            model.addAttribute("tasks", taskService.getAllTasks());
+        }*/
+        model.addAttribute("tasks", taskService.getAllTasks());
         model.addAttribute("statusList", Status.values());
         return "index";
     }

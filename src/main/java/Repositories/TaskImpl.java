@@ -57,22 +57,23 @@ public class TaskImpl implements TaskInterface {
     @Override
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        Task task = null;
         String query = "select * from tasks";
         try (var connectionDB = ConnectionDB.getConnection();
-             var ps = connectionDB.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                task = new Task();
-                task.setId(rs.getLong("id"));
-                task.setName(rs.getString("name"));
-                task.setDescription(rs.getString("description"));
-                task.setPriority(Priority.valueOf(rs.getString("priority")));
-                task.setStatus(Status.valueOf(rs.getString("status")));
-                task.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-                task.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
-                tasks.add(task);
-            }
+             var ps = connectionDB.createStatement()) {
+                 try (ResultSet rs = ps.executeQuery(query)) {
+                     if (rs.next()) {
+                         Task task = new Task();
+                         task.setId(rs.getLong("id"));
+                         task.setName(rs.getString("name"));
+                         task.setDescription(rs.getString("description"));
+                         task.setPriority(Priority.valueOf(rs.getString("priority")));
+                         task.setStatus(Status.valueOf(rs.getString("status")));
+                         task.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+                         task.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
+                         tasks.add(task);
+                     }
+                 }
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException("Error fetching tasks", e);
         }
@@ -82,14 +83,13 @@ public class TaskImpl implements TaskInterface {
     @Override
     public List<Task> getTasksByStatus(Status status) {
         List<Task> tasks = new ArrayList<>();
-        Task task = null;
         String query = "select * from tasks where status = ?";
         try (var connectionDB = ConnectionDB.getConnection();
              var ps = connectionDB.prepareStatement(query)) {
             ps.setString(1, String.valueOf(status));
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    task = new Task();
+                    Task task = new Task();
                     task.setId(rs.getLong("id"));
                     task.setName(rs.getString("name"));
                     task.setDescription(rs.getString("description"));
