@@ -22,12 +22,11 @@ public class TaskController {
 
     @GetMapping("/index")
     public String showTasks(@RequestParam(value = "status",required = false) Status status, Model model) {
-        /*if (status != null) {
+        if (status != null) {
             model.addAttribute("tasks", taskService.getTasksByStatus(status));
         } else {
             model.addAttribute("tasks", taskService.getAllTasks());
-        }*/
-        model.addAttribute("tasks", taskService.getAllTasks());
+        }
         model.addAttribute("statusList", Status.values());
         return "index";
     }

@@ -67,9 +67,10 @@ public class TaskImpl implements TaskInterface {
                          task.setName(rs.getString("name"));
                          task.setDescription(rs.getString("description"));
                          task.setPriority(Priority.valueOf(rs.getString("priority")));
+                         //task.setPriority(rs.getString("priority") != null ? Priority.valueOf(rs.getString("priority")) : null);
                          task.setStatus(Status.valueOf(rs.getString("status")));
-                         task.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-                         task.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
+                         task.setCreatedAt(rs.getTimestamp("created_At").toLocalDateTime());
+                         task.setUpdatedAt(rs.getTimestamp("updated_At").toLocalDateTime());
                          tasks.add(task);
                      }
                  }
@@ -95,13 +96,13 @@ public class TaskImpl implements TaskInterface {
                     task.setDescription(rs.getString("description"));
                     task.setPriority(Priority.valueOf(rs.getString("priority")));
                     task.setStatus(Status.valueOf(rs.getString("status")));
-                    task.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-                    task.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
+                    task.setCreatedAt(rs.getTimestamp("created_At").toLocalDateTime());
+                    task.setUpdatedAt(rs.getTimestamp("updated_At").toLocalDateTime());
                     tasks.add(task);
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException("Error fetching tasks by name", e);
+            throw new RuntimeException("Error fetching tasks by status", e);
         }
         return tasks;
     }

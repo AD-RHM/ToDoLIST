@@ -39,7 +39,7 @@
         <div class="row">
             <div class="col-md-10">
                 <select name="status" class="form-select">
-                    <option value="">All</option>
+                    <option value="status">All</option>
                     <c:forEach var="status" items="${statusList}">
                         <option value="${status}">${status}</option>
                     </c:forEach>
